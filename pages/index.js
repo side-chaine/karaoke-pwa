@@ -3,7 +3,10 @@ import Layout from '../components/Layout';
 import { Typography, Container, Button, Grid, Paper } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import GoogleIcon from '@mui/icons-material/Google';
-import FacebookIcon from '@mui/icons-material/Facebook'; // Используем Facebook как замену для VK
+import FacebookIcon from '@mui/icons-material/Facebook';
+import { useAuth } from '../components/AuthProvider';
+import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { auth } from '../firebase';
 
 const HeroSection = styled(Paper)(({ theme }) => ({
   backgroundImage: 'url("/hero-image.jpg")',
@@ -20,6 +23,25 @@ const FeatureItem = styled(Paper)(({ theme }) => ({
 }));
 
 export default function Home() {
+  const { user } = useAuth();
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error('Error signing in with Google', error);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Error signing out', error);
+    }
+  };
+
   return (
     <Layout>
       <HeroSection>
@@ -55,16 +77,26 @@ export default function Home() {
           </Grid>
         </Grid>
         <Grid container justifyContent="center" spacing={2} style={{ marginTop: '2rem' }}>
-          <Grid item>
-            <Button variant="contained" color="primary" startIcon={<GoogleIcon />}>
-              Войти через Google
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button variant="contained" style={{ backgroundColor: '#4C75A3', color: 'white' }} startIcon={<FacebookIcon />}>
-              Войти через VK
-            </Button>
-          </Grid>
+          {user ? (
+            <Grid item>
+              <Button variant="contained" color="primary" onClick={handleSignOut}>
+                Выйти
+              </Button>
+            </Grid>
+          ) : (
+            <>
+              <Grid item>
+                <Button variant="contained" color="primary" startIcon={<GoogleIcon />} onClick={handleGoogleSignIn}>
+                  Войти через Google
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button variant="contained" style={{ backgroundColor: '#4C75A3', color: 'white' }} startIcon={<FacebookIcon />}>
+                  Войти через VK
+                </Button>
+              </Grid>
+            </>
+          )}
         </Grid>
       </Container>
     </Layout>
