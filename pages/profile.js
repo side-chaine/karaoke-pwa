@@ -1,9 +1,8 @@
 import React from 'react';
 import Layout from '../components/Layout';
-import { Typography, Container, Button } from '@material-ui/core';
+import { Typography, Container, Button } from '@mui/material';
 
 const Profile = () => {
-  // Здесь будет логика аутентификации и получения данных профиля
   const isLoggedIn = false;
 
   return (

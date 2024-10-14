@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
-import { Typography, Container, List, ListItem, ListItemText } from '@material-ui/core';
+import { Typography, Container, List, ListItem, ListItemText } from '@mui/material';
 
 const Queue = () => {
   // Здесь будет логика получения данных о очереди
