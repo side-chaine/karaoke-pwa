@@ -13,9 +13,3 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-
-// Инициализируем analytics только на стороне клиента
-if (typeof window !== 'undefined') {
-  const { getAnalytics } = require("firebase/analytics");
-  const analytics = getAnalytics(app);
-}

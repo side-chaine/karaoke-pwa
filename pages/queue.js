@@ -1,12 +1,5 @@
 import React from 'react';
-import Layout from '../components/Layout';
-import { Typography, Container, List, ListItem, ListItemText, Paper, TextField, Button, Box } from '@mui/material';
-import { styled } from '@mui/material/styles';
-
-const QueueItem = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
-  marginBottom: theme.spacing(2),
-}));
+import { Typography, Container, List, ListItem, ListItemText } from '@mui/material';
 
 const Queue = () => {
   const queueItems = [
@@ -16,36 +9,21 @@ const Queue = () => {
   ];
 
   return (
-    <Layout>
-      <Container maxWidth="md">
-        <Typography variant="h4" component="h1" gutterBottom>
-          Очередь песен
-        </Typography>
-        <Box mb={4}>
-          <TextField
-            fullWidth
-            variant="outlined"
-            label="Поиск песни"
-            placeholder="Введите название песни или исполнителя"
-          />
-        </Box>
-        <List>
-          {queueItems.map((item, index) => (
-            <QueueItem key={item.id} elevation={2}>
-              <ListItem>
-                <ListItemText
-                  primary={`${index + 1}. ${item.song}`}
-                  secondary={`Исполнитель: ${item.singer}`}
-                />
-                <Button variant="contained" color="primary">
-                  Добавить в очередь
-                </Button>
-              </ListItem>
-            </QueueItem>
-          ))}
-        </List>
-      </Container>
-    </Layout>
+    <Container maxWidth="sm">
+      <Typography variant="h4" component="h1" gutterBottom>
+        Очередь песен
+      </Typography>
+      <List>
+        {queueItems.map((item) => (
+          <ListItem key={item.id}>
+            <ListItemText 
+              primary={item.song} 
+              secondary={`Исполнитель: ${item.singer}`} 
+            />
+          </ListItem>
+        ))}
+      </List>
+    </Container>
   );
 };
 
