@@ -1,18 +1,43 @@
-import React from 'react';
-import { Typography, Container, List, ListItem, ListItemText } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Typography, Container, List, ListItem, ListItemText, Button } from '@mui/material';
+import { ref, onValue, push } from "firebase/database";
+import { auth, database } from '../firebase';
 
 const Queue = () => {
-  const queueItems = [
-    { id: 1, song: 'Bohemian Rhapsody', singer: 'Иван' },
-    { id: 2, song: 'Imagine', singer: 'Мария' },
-    { id: 3, song: 'Hotel California', singer: 'Алексей' },
-  ];
+  const [queueItems, setQueueItems] = useState([]);
+
+  useEffect(() => {
+    const queueRef = ref(database, 'queue');
+    const unsubscribe = onValue(queueRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const items = Object.entries(data).map(([key, value]) => ({
+          id: key,
+          ...value
+        }));
+        setQueueItems(items);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const addToQueue = () => {
+    const queueRef = ref(database, 'queue');
+    push(queueRef, {
+      song: 'Новая песня',
+      singer: auth.currentUser ? auth.currentUser.displayName : 'Аноним'
+    });
+  };
 
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" component="h1" gutterBottom>
         Очередь песен
       </Typography>
+      <Button onClick={addToQueue} variant="contained" color="primary">
+        Добавить песню
+      </Button>
       <List>
         {queueItems.map((item) => (
           <ListItem key={item.id}>
