@@ -1,6 +1,5 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAw3hdoDMOo8_tNyJr0Qll-jIUhxFpNpQk",
@@ -15,6 +14,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
+// Инициализируем analytics только на стороне клиента
 if (typeof window !== 'undefined') {
+  const { getAnalytics } = require("firebase/analytics");
   const analytics = getAnalytics(app);
 }
