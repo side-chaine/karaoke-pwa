@@ -5,7 +5,7 @@ import Link from 'next/link';
 function MyApp({ Component, pageProps }) {
   return (
     <AuthProvider>
-      <nav style={{ marginBottom: '20px' }}>
+      <nav style={{ marginBottom: '20px', padding: '10px' }}>
         <Link href="/" style={{ marginRight: '10px' }}>
           Главная
         </Link>
