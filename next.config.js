@@ -1,11 +1,9 @@
-const webpack = require('webpack');
-
-module.exports = {
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    config.resolve.fallback = {
-      ...config.resolve.fallback,
-      punycode: false,
-    };
-    return config;
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV !== 'development',
   },
-};
+}
+
+module.exports = nextConfig
