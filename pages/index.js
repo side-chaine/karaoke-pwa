@@ -1,19 +1,22 @@
-import React from 'react';
-import { Typography, Container, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Typography, Container, Button, CircularProgress } from '@mui/material';
 import Link from 'next/link';
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { auth } from '../firebase';
+import { signInWithGoogle } from '../firebase';
 import { useAuth } from '../components/AuthProvider';
 
 export default function Home() {
   const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const handleGoogleSignIn = async () => {
-    const provider = new GoogleAuthProvider();
+    setLoading(true);
     try {
-      await signInWithPopup(auth, provider);
+      await signInWithGoogle();
     } catch (error) {
       console.error("Error signing in with Google", error);
+      alert(`Ошибка входа: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -30,8 +33,13 @@ export default function Home() {
           Привет, {user.displayName || user.email}!
         </Typography>
       ) : (
-        <Button variant="contained" color="primary" onClick={handleGoogleSignIn}>
-          Войти через Google
+        <Button 
+          variant="contained" 
+          color="primary" 
+          onClick={handleGoogleSignIn}
+          disabled={loading}
+        >
+          {loading ? <CircularProgress size={24} /> : 'Войти через Google'}
         </Button>
       )}
       <Link href="/queue" passHref legacyBehavior>
