@@ -11,7 +11,9 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("Setting up auth state listener");
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log("Auth state changed", user);
       setUser(user);
       setLoading(false);
     });
@@ -21,7 +23,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ user, loading }}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
