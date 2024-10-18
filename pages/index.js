@@ -14,7 +14,7 @@ export default function Home() {
       await signInWithGoogle();
     } catch (error) {
       console.error("Error signing in with Google", error);
-      alert(`Ошибка входа: ${error.message}`);
+      alert(`Ошибка входа: ${error.message}. Пожалуйста, проверьте консоль для дополнительной информации.`);
     } finally {
       setLoading(false);
     }
